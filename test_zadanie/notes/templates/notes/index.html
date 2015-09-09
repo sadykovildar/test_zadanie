@@ -1,0 +1,82 @@
+{% extends 'main.html' %}
+
+{% block note%}
+
+{% if username  %}
+<div style="margin: 0px 30px 20px">
+<form action="/notes/newnote/" method="post" style="float: left; width: 30%">
+    {% csrf_token %}
+    {{ form }}<br>
+    <input type="submit" class="button" text="Добавить заметку" value="Добавить заметку">
+</form>
+
+<div id="response" style="float: left; width: 40%; margin: 0px 20px">
+{% if latest_note_list %}
+	
+	{% for note in latest_note_list %}
+		<div id="list_of_notes" style="border: 3px solid #E0E0E0; border-radius: 4px; padding: 3px; margin: 4px 0px">
+			<a href="/note/{{ note.uuid }}/">{{ note.header}}</a>   
+			<label style="float: right; color: blue; font-size: 16px" onclick="SetNoteChosen('{{ note.uuid }}')" id="{{note.uuid}}">
+			{% if note.chosen %} <span style="color: blue">Избранная	</span>
+			{% else %} <span style="color: #A90000">Не избранная</span>
+			{% endif %}
+			</label>
+			<br>		
+			
+			<span style="float:left; color: green">{{ note.category }}   </span><br>
+			<span>{{ note.text|safe }}</span>
+			
+			<br><br>
+			<button onclick="DelNote('{{ note.uuid }}')" class="label round" style="font-size: 14px" id="del">Удалить</button>
+			<span style="float:right">{{note.pub_date|date:"d.m.Y H:i"}}</span>
+		</div>
+	{% endfor %}
+	
+{% else %}
+	<p style="border: 1px solid #F6F6FF ;  padding: 7px">Заметок нет</p>
+{% endif %}
+</div>
+<div  style="float: right; width: 26%; padding: 7px>
+
+<div>
+<hr>
+<output style="color: green; font-size: 25px"></output>
+<select id="sort_category" size="1" class="tiny_stile">
+	<option value="1">Дата</option>
+	<option value="2">Категория</option>
+	<option value="3">Избранное</option>
+</select>
+<select id="sort_cret" size="1" class="tiny_stile" >
+	<option value="1">По возрастанию</option>
+	<option value="2">По убыванию</option>
+</select>
+<button onclick="SortNotes()" class="button" id="sort">Сортировать</button>
+<output style="color: green; font-size: 25px"></output>
+
+<div id="search_div">
+	<output style="color: green; font-size: 25px"></output>
+	<select id="search_category" size="1" class="tiny_stile">
+		<option value="1">Дата</option>
+		<option value="2">Заголовок</option>
+		<option value="3">Категория</option>
+		<option value="4">Избранное</option>
+	</select>
+	<button id="search_button_cretery" class="button" onclick="CreateFieldsForSearch()">Выбрать критерий для поиска</button>
+	<output style="color: green; font-size: 25px"></output>
+	<div id="search_field">
+	</div>
+</div>
+<hr style=" color: #000000">
+
+<br>
+
+</div>
+</div>
+{% else %}
+    <p>
+        <a href="/auth/login">Войдите в систему</a><br>
+        или <a href="/auth/register">зарегистрируйтесь</a><br>
+    </p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,55 @@
+﻿{% extends 'main.html' %}
+
+{% block note %}
+
+{% if username %}
+    {% if note.uuid_boolean != False or request.user == note.user%}
+
+        <div class="row">
+        <h2>{{ note.header }}</h2>
+        <div style="border-bottom: 4px solid #F0F0F0; margin-bottom: 10px">
+        <p>
+            {{ note.display_my_safefield }}
+        </p>
+        </div>
+        {{ note.pub_date }} <br>
+        {{ note.category }}<br>
+        {% if note.chosen %}
+            <i style="color: grey">Избранное</i><br>
+        {% endif %}
+
+
+        <br>
+
+        {% if note.uuid_boolean %}
+            {% if request.user == note.user %}
+            <a href ="/note/close_note/{{ note.uuid }}" style="font-size:14px" class="label round">Отменить публикацию</a>
+            {% endif %}
+            <i style="color: #F3B2D1">Опубликовано</i><br>
+        {% else %}
+            {% if request.user == note.user %}
+            <a href ="/note/open_note/{{ note.uuid }}" style="font-size:14px" class="label round">Опубликовать</a>
+            {% endif %}
+            <i>Не опубликовано</i><br>
+        {% endif %}
+
+        Постоянная ссылка на заметку:<br>
+        <a href="{{ url }}">{{ url }}</a>
+        <br>
+            <br>
+        <a href="/note/edit/{{ note.uuid }} " style="font-size:14px" class="label round">Редактировать</a>
+        <a href="/note/delete/{{ note.uuid }}" style="font-size:14px" class="label round secondary">Удалить</a>
+        </div>
+    {% else %}
+        <p>
+            Заметка закрыта для просмотра
+        </p>
+    {% endif %}
+{% else %}
+    <p>
+        <a href="/auth/login">Войдите в систему</a><br>
+        или <a href="/auth/register">зарегистрируйтесь</a><br>
+    </p>
+{% endif %}
+
+{% endblock %}

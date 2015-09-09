@@ -1,0 +1,12 @@
+﻿{% if sorted_note_list %}
+	
+	{% for note in sorted_note_list %}
+		<p style="border: 3px solid #E0E0E0; border-radius: 4px">
+			<a href="/note/{{ note.uuid }}/">{{ note.header}}</a><br>
+			{{note.pub_date}}<br>
+		</p>
+	{% endfor %}
+	
+{% else %}
+	<p style="float: right; border: 1px solid #F6F6FF ; width: 600px; padding: 7px">Заметок нет</p>
+{% endif %}

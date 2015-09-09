@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+{% block note%}
+
+{% if username %}
+<div class="row">
+<form action="/notes/save_edited_note/{{ note.uuid }}/" method="post">
+    {% csrf_token %}
+    {{ form }}<br>
+    <input type="submit" class="button" value="Сохранить изменения">
+</form>
+{% endif %}
+
+{% endblock %}
+</div>
